@@ -1,1 +1,131 @@
-
+{
+  "name": "Tavily Tool",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "737ab609-e0f7-4051-816c-d7b5d5b24124",
+      "name": "Workflow Input Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.tavily.com/search",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"api_key\": \"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\",\n    \"query\": \"{{ $json.query.replace(/\"/g, '\\\\\"') }}\",\n    \"search_depth\": \"basic\",\n    \"include_answer\": true,\n    \"topic\": \"news\",\n    \"include_raw_content\": true,\n    \"max_results\": 3\n} ",
+        "options": {}
+      },
+      "id": "70fc8cb6-f440-4b01-9bd9-c42b461700c0",
+      "name": "Tavily",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "1ae0dd90-d1d0-494b-bd8b-1ef335f0bd8f",
+              "name": "response",
+              "value": "=[Source 1]\nURL: {{ $json.results[0].url }}\nContent: {{ $json.results[0].content }}\n\n[Source 2]\nURL: {{ $json.results[1].url }}\nContent: {{ $json.results[1].content }}\n\n[Source 3]\nURL: {{ $json.results[2].url }}\nContent: {{ $json.results[2].content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        0
+      ],
+      "id": "6008611e-6b72-4cd1-a1c5-bc5e84a5a355",
+      "name": "response"
+    },
+    {
+      "parameters": {
+        "content": "## Tavily Tool to setup Research Agent for Newsletter Automation Workflow",
+        "height": 320,
+        "width": 920,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -224,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "c16adaf3-f4c1-4ba8-811d-e24d001036f6",
+      "name": "Sticky Note"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Workflow Input Trigger": {
+      "main": [
+        [
+          {
+            "node": "Tavily",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tavily": {
+      "main": [
+        [
+          {
+            "node": "response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "62b48c7e-be08-47bd-8e3f-a5048aa1fee6",
+  "meta": {
+    "instanceId": "3f21aaf8491157c44331f10f943768229b6695aa90fd86fc40ddb60f0a283c31"
+  },
+  "nodeGroups": [],
+  "id": "VeNU2W12QyNj02pl",
+  "tags": [
+    {
+      "updatedAt": "2025-06-05T06:58:59.412Z",
+      "createdAt": "2025-06-05T06:58:59.412Z",
+      "id": "Ba1Vyb7BJb8L5WK7",
+      "name": "ET"
+    },
+    {
+      "updatedAt": "2025-10-27T08:56:35.862Z",
+      "createdAt": "2025-10-27T08:56:35.862Z",
+      "id": "4VGoJKQCTJHU7PTY",
+      "name": "viraj-n8n"
+    },
+    {
+      "updatedAt": "2026-07-06T12:34:18.987Z",
+      "createdAt": "2026-07-06T12:34:18.987Z",
+      "id": "Q2FSS6WmlOLG7oI7",
+      "name": "Done in KT session"
+    }
+  ]
+}
